@@ -28,8 +28,6 @@ My Golang First Pet project
 ├── main.go
 ├── static
 ├── template
-│   ├── base.tmpl
-│   ├── blank.tmpl
 │   ├── chat.html
 │   ├── generator.html
 │   ├── js
@@ -38,10 +36,8 @@ My Golang First Pet project
 │   └── partial
 │       ├── footer.tmpl
 │       └── menu.tmpl
-├── tree.txt
 └── util
     └── logger
         └── logger.go
 
-16 directories, 22 files
 ```
