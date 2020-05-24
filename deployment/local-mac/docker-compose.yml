@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  first-pet:
+    image: "first-pet"
+    container_name: "first-pet:local-mac"
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    restart: always
+    network_mode: bridge
