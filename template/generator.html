@@ -1,9 +1,9 @@
 <h1>{{.Title}}</h1>
 <div>Please enter the string you want to QRCode.</div>
 <form action="generator/" method=post>
-    <input type="text" name="input" value="{{ .FormInputValue }}">
-    <input type="submit" value="Submit">
+  <input type="text" name="input" value="{{ .FormInputValue }}">
+  <input type="submit" value="Submit">
 </form>
 
 <h1>GeneratedCode </h1>
-<img src="{{ .GeneratedCode }}" />
+<img src="{{ .Host }}/qrcode/generator">
