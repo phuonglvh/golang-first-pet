@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/phuonglvh/pet/app/model"
+	"github.com/phuonglvh/golang-first-pet/app/model"
 )
 
 // HomeHandler handle index page

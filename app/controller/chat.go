@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
-	"github.com/phuonglvh/pet/app/model"
+	"github.com/phuonglvh/golang-first-pet/app/model"
 )
 
 // ChatHandler handle the chat feature

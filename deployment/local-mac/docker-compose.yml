@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-  first-pet:
-    image: "first-pet"
-    container_name: "first-pet:local-mac"
+  golang-multi-room-chat:
+    image: "golang-multi-room-chat"
+    container_name: "golang-multi-room-chat"
     build:
       context: ../../
       dockerfile: Dockerfile

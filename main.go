@@ -6,9 +6,9 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/phuonglvh/pet/app/controller"
-	"github.com/phuonglvh/pet/app/model"
-	"github.com/phuonglvh/pet/util/logger"
+	"github.com/phuonglvh/golang-first-pet/app/controller"
+	"github.com/phuonglvh/golang-first-pet/app/model"
+	"github.com/phuonglvh/golang-first-pet/util/logger"
 )
 
 func main() {
