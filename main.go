@@ -18,7 +18,7 @@ func main() {
 	// replace http.HandleFunc with myRouter.HandleFunc
 	myRouter.HandleFunc("/", controller.HomeHandler)
 	myRouter.HandleFunc("/", controller.HomeHandler)
-	myRouter.HandleFunc("/generator/", controller.ViewCodeHandler)
+	myRouter.HandleFunc("/qrcode/generator", controller.ViewCodeHandler)
 	myRouter.HandleFunc("/chat", controller.ChatIndex)
 	myRouter.HandleFunc("/chat/rooms/{id}", controller.ChatIndex)
 
