@@ -1,19 +1,29 @@
 package model
 
 import (
-	"log"
+	"encoding/json"
 	"net/http"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
-	"github.com/matryer/goblueprints/chapter1/trace"
+
+	"github.com/phuonglvh/golang-first-pet/util/logger"
 )
+
+const (
+	socketBufferSize  = 1024
+	messageBufferSize = 256
+)
+
+var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: socketBufferSize}
 
 // Room define model for a room
 type Room struct {
 	ID string
 	// Forward is a channel that holds incoming messages
 	// that should be forwarded to the other clients.
-	Forward chan []byte
+	Forward chan *RawClientMessage
 
 	// join is a channel for clients wishing to join the room.
 	Join chan *Client
@@ -26,24 +36,20 @@ type Room struct {
 
 	// Tracer will receive trace information of activity
 	// in the room.
-	Tracer trace.Tracer
+	// Tracer trace.Tracer
 
-	messages [][]byte
-
-	messageses []Message
+	messages []*Message
 }
 
 // NewRoom will create a new room
 func NewRoom(ID string) *Room {
 	return &Room{
-		ID:         ID,
-		Forward:    make(chan []byte),
-		Join:       make(chan *Client),
-		Leave:      make(chan *Client),
-		clients:    make(map[*Client]bool),
-		Tracer:     trace.Off(),
-		messages:   [][]byte{},
-		messageses: []Message{},
+		ID:       ID,
+		Forward:  make(chan *RawClientMessage),
+		Join:     make(chan *Client),
+		Leave:    make(chan *Client),
+		clients:  make(map[*Client]bool),
+		messages: []*Message{},
 	}
 }
 
@@ -54,64 +60,59 @@ func (room *Room) Run() {
 		case client := <-room.Join:
 			// joining
 			room.clients[client] = true
-			room.Tracer.Trace("New client joined")
+			logger.Info.Printf("Client %s has joined the room %s", client.ID, room.ID)
 			room.sendPastMessages(client)
 		case client := <-room.Leave:
 			// leaving
 			delete(room.clients, client)
 			close(client.Send)
-			room.Tracer.Trace("Client left")
-		case msg := <-room.Forward:
-			msgString := string(msg)
-			room.messageses = append(room.messageses, Message{ID: "dafdsa", Sender: "dafdsa", Content: msgString})
-			room.Tracer.Trace("Message received: ", msgString)
-			room.messages = append(room.messages, msg)
+			logger.Info.Printf("Client %s has left the room %s", client.ID, room.ID)
+		case fwdMsg := <-room.Forward:
+			message := &Message{
+				ID:        uuid.New().String(),
+				Content:   fwdMsg.Content,
+				Sender:    fwdMsg.Sender,
+				Timestamp: time.Now().Unix() * 1000,
+			}
+			room.messages = append(room.messages, message)
+			logger.Trace.Printf("Client has sent message to others in room %s: %s", room.ID, fwdMsg.Content)
 			// forward message to all clients
-			room.sendMessageToAll(msg)
-			// default:
-			// 	room.Tracer.Trace("default room Run: ")
+			room.sendMessageToAll(message)
 		}
 	}
 }
 
-func (room *Room) sendMessageToAll(messageBytes []byte) {
+func (room *Room) sendMessageToAll(message *Message) {
 	for client := range room.clients {
-		room.sendMessageToClient(client, messageBytes)
+		room.sendMessageToClient(client, message)
 	}
 }
 
-func (room *Room) sendMessageToClient(client *Client, messageBytes []byte) {
-	client.Send <- messageBytes
-	room.Tracer.Trace(" -- sent a message to client ", string(messageBytes))
+func (room *Room) sendMessageToClient(client *Client, messagge *Message) {
+	bytes, _ := json.Marshal(messagge)
+	client.Send <- bytes
+	logger.Trace.Printf("Sent a message to client %s: %s", client.ID, string(bytes))
 }
 
 func (room *Room) sendPastMessages(client *Client) {
-	room.Tracer.Trace(" -- start sending past messages to client")
+	logger.Trace.Printf("Sending past %d messages to client %s", len(room.messages), client.ID)
 	for _, msg := range room.messages {
 		room.sendMessageToClient(client, msg)
 	}
 }
 
-const (
-	socketBufferSize  = 1024
-	messageBufferSize = 256
-)
-
-var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: socketBufferSize}
-
 func (room *Room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	socket, err := upgrader.Upgrade(w, req, nil)
 	if err != nil {
-		log.Fatal("ServeHTTP:", err)
+		logger.Error.Fatalf("Room %s has encountered error while serving http: %s", room.ID, err)
 		return
 	}
+	logger.Info.Printf("Room %s is waiting for clients", room.ID)
 	client := &Client{
 		Socket: socket,
 		Send:   make(chan []byte, messageBufferSize),
 		Room:   room,
 	}
 	room.Join <- client
-	// defer func() { room.Leave <- client }()
-	// go client.Write()
 	client.Read()
 }

@@ -25,7 +25,7 @@ func (c *Client) Read() {
 		if err != nil {
 			return
 		}
-		c.Room.Forward <- msg
+		c.Room.Forward <- &RawClientMessage{Sender: c.ID, Content: string(msg)}
 	}
 }
 
