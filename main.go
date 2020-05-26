@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -12,7 +11,7 @@ import (
 )
 
 func main() {
-	logger.Init(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
+	logger.Init(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
 
 	myRouter := mux.NewRouter().StrictSlash(true)
 	// replace http.HandleFunc with myRouter.HandleFunc
