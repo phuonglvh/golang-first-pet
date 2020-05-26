@@ -14,7 +14,7 @@
 </head>
 
 <body>
-  <img src="/generator?string=<roomId>">
+  <img src="/qrcode/generator?string=?">
   <ul id="messages"></ul>
   <form id="chatbox">
     <textarea></textarea>
@@ -53,7 +53,8 @@
         socket.onclose = function () {
           alert("Connection has been closed.");
         }
-        socket.onmessage = function (e) {
+        socket.onmessage = (e) => {
+          console.log(e);
           messages.append($("<li>").text(e.data));
         }
       }
