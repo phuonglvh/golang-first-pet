@@ -1,0 +1,9 @@
+# Server configurations
+server:
+  host: "localhost"
+  port: 8080
+
+# App chat
+chat:
+  message:
+    live_time: 1 # in minute
