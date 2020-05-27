@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/websocket"
 	cache "github.com/patrickmn/go-cache"
 
+	"github.com/phuonglvh/golang-first-pet/config"
 	"github.com/phuonglvh/golang-first-pet/util/logger"
 )
 
@@ -35,25 +36,21 @@ type Room struct {
 	// clients holds all current clients in this room.
 	clients map[*Client]bool
 
-	// Tracer will receive trace information of activity
-	// in the room.
-	// Tracer trace.Tracer
-
-	messages []*Message
-
 	storage *cache.Cache
 }
 
 // NewRoom will create a new room
 func NewRoom(ID string) *Room {
+	lifetime := config.Cfg.Chat.Message.Lifetime
+	cacheTTL := time.Duration(lifetime) * time.Minute
+	logger.Info.Printf("Set message lifetime to: %d minutes", lifetime)
 	return &Room{
-		ID:       ID,
-		Forward:  make(chan *RawClientMessage),
-		Join:     make(chan *Client),
-		Leave:    make(chan *Client),
-		clients:  make(map[*Client]bool),
-		messages: []*Message{},
-		storage:  cache.New(1*time.Minute, 1*time.Minute),
+		ID:      ID,
+		Forward: make(chan *RawClientMessage),
+		Join:    make(chan *Client),
+		Leave:   make(chan *Client),
+		clients: make(map[*Client]bool),
+		storage: cache.New(cacheTTL, cacheTTL),
 	}
 }
 
@@ -78,7 +75,6 @@ func (room *Room) Run() {
 				Sender:    fwdMsg.Sender,
 				Timestamp: time.Now().Unix() * 1000,
 			}
-			room.messages = append(room.messages, message)
 			room.storage.Add(message.ID, message, cache.DefaultExpiration)
 			logger.Trace.Printf("Client has sent message to others in room %s: %s", room.ID, fwdMsg.Content)
 			// forward message to all clients
@@ -100,12 +96,10 @@ func (room *Room) sendMessageToClient(client *Client, messagge *Message) {
 }
 
 func (room *Room) sendPastMessages(client *Client) {
-	logger.Trace.Printf("Sending past %d messages to client %s", len(room.messages), client.ID)
+	logger.Trace.Printf("Sending past %d messages to client %s", room.storage.ItemCount(), client.ID)
 	items := room.storage.Items()
 	for _, msg := range items {
-		// for _, msg := range room.messages {
 		room.sendMessageToClient(client, msg.Object.(*Message))
-		// }
 	}
 }
 
