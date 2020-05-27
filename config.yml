@@ -6,4 +6,4 @@ server:
 # App chat
 chat:
   message:
-    live_time: 1 # in minute
+    lifetime: 1 # in minute

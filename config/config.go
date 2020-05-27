@@ -16,7 +16,7 @@ type Config struct {
 	} `yaml:"server"`
 	Chat struct {
 		Message struct {
-			LiveTime int `yaml:"live_time"`
+			Lifetime int `yaml:"lifetime"`
 		} `yaml:"message"`
 	} `yaml:"chat"`
 }
