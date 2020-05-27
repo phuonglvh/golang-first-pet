@@ -20,13 +20,13 @@ const (
 	messageBufferSize = 256
 )
 
+var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: socketBufferSize}
+
 // ChatIndex handle render Chat Page
 func ChatIndex(w http.ResponseWriter, r *http.Request) {
 	template := model.TemplateHandler{Filename: "chat.html"}
 	template.ServeHTTP(w, r)
 }
-
-var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: socketBufferSize}
 
 func (chat *ChatHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	socket, err := upgrader.Upgrade(w, req, nil)
