@@ -18,7 +18,6 @@ func main() {
 	myRouter.HandleFunc("/", controller.HomeHandler)
 	myRouter.HandleFunc("/", controller.HomeHandler)
 	myRouter.HandleFunc("/qrcode/generator", controller.ViewCodeHandler)
-	myRouter.HandleFunc("/chat", controller.ChatIndex)
 	myRouter.HandleFunc("/chat/rooms/{id}", controller.ChatIndex)
 
 	chatHandler := &controller.ChatHandler{Rooms: make(map[string]*model.Room)}
