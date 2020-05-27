@@ -7,6 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
+	cache "github.com/patrickmn/go-cache"
 
 	"github.com/phuonglvh/golang-first-pet/util/logger"
 )
@@ -39,6 +40,8 @@ type Room struct {
 	// Tracer trace.Tracer
 
 	messages []*Message
+
+	storage *cache.Cache
 }
 
 // NewRoom will create a new room
@@ -50,6 +53,7 @@ func NewRoom(ID string) *Room {
 		Leave:    make(chan *Client),
 		clients:  make(map[*Client]bool),
 		messages: []*Message{},
+		storage:  cache.New(1*time.Minute, 1*time.Minute),
 	}
 }
 
@@ -75,6 +79,7 @@ func (room *Room) Run() {
 				Timestamp: time.Now().Unix() * 1000,
 			}
 			room.messages = append(room.messages, message)
+			room.storage.Add(message.ID, message, cache.DefaultExpiration)
 			logger.Trace.Printf("Client has sent message to others in room %s: %s", room.ID, fwdMsg.Content)
 			// forward message to all clients
 			room.sendMessageToAll(message)
@@ -96,8 +101,11 @@ func (room *Room) sendMessageToClient(client *Client, messagge *Message) {
 
 func (room *Room) sendPastMessages(client *Client) {
 	logger.Trace.Printf("Sending past %d messages to client %s", len(room.messages), client.ID)
-	for _, msg := range room.messages {
-		room.sendMessageToClient(client, msg)
+	items := room.storage.Items()
+	for _, msg := range items {
+		// for _, msg := range room.messages {
+		room.sendMessageToClient(client, msg.Object.(*Message))
+		// }
 	}
 }
 

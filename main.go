@@ -23,5 +23,5 @@ func main() {
 	chatHandler := &controller.ChatHandler{Rooms: make(map[string]*model.Room)}
 	myRouter.Handle("/chat/rooms/{id}/ws", chatHandler)
 	logger.Info.Println("Server is listening on port ", 8080)
-	http.ListenAndServe(":8080", myRouter)
+	http.ListenAndServe("0.0.0.0:8080", myRouter)
 }
