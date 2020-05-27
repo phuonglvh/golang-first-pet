@@ -11,7 +11,7 @@ import (
 // Config contains environment variables
 type Config struct {
 	Server struct {
-		Port int    `yaml:"port"`
+		Port int32  `yaml:"port"`
 		Host string `yaml:"host"`
 	} `yaml:"server"`
 	Chat struct {

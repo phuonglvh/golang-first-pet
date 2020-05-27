@@ -3,25 +3,27 @@ package main
 import (
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/phuonglvh/golang-first-pet/app/controller"
 	"github.com/phuonglvh/golang-first-pet/app/model"
+	"github.com/phuonglvh/golang-first-pet/config"
 	"github.com/phuonglvh/golang-first-pet/util/logger"
 )
 
 func main() {
 	logger.Init(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
-
-	myRouter := mux.NewRouter().StrictSlash(true)
-	// replace http.HandleFunc with myRouter.HandleFunc
-	myRouter.HandleFunc("/", controller.HomeHandler)
-	myRouter.HandleFunc("/", controller.HomeHandler)
-	myRouter.HandleFunc("/qrcode/generator", controller.ViewCodeHandler)
-	myRouter.HandleFunc("/chat/rooms/{id}", controller.ChatIndex)
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/", controller.HomeHandler)
+	router.HandleFunc("/qrcode/generator", controller.ViewCodeHandler)
+	router.HandleFunc("/chat/rooms/{id}", controller.ChatIndex)
 
 	chatHandler := &controller.ChatHandler{Rooms: make(map[string]*model.Room)}
-	myRouter.Handle("/chat/rooms/{id}/ws", chatHandler)
-	logger.Info.Println("Server is listening on port ", 8080)
-	http.ListenAndServe("0.0.0.0:8080", myRouter)
+	router.Handle("/chat/rooms/{id}/ws", chatHandler)
+
+	// host := config.Cfg.Server.Host
+	port := strconv.FormatInt(int64(config.Cfg.Server.Port), 10)
+	logger.Info.Println("Server is listening on port ", port)
+	http.ListenAndServe(":"+port, router)
 }
