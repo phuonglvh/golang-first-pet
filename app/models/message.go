@@ -1,4 +1,4 @@
-package model
+package models
 
 // Message describe a message sent and receive between clients
 type Message struct {

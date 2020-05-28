@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"log"
@@ -6,13 +6,13 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
-	"github.com/phuonglvh/golang-first-pet/app/model"
-	"github.com/phuonglvh/golang-first-pet/util/logger"
+	"github.com/phuonglvh/golang-first-pet/app/models"
+	logger "github.com/phuonglvh/golang-first-pet/utils/logger"
 )
 
 // ChatHandler handle the chat feature
 type ChatHandler struct {
-	Rooms map[string]*model.Room
+	Rooms map[string]*models.Room
 }
 
 const (
@@ -24,7 +24,7 @@ var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBuffer
 
 // ChatIndex handle render Chat Page
 func ChatIndex(w http.ResponseWriter, r *http.Request) {
-	template := model.TemplateHandler{Filename: "chat.html"}
+	template := models.TemplateHandler{Filename: "chat.html"}
 	template.ServeHTTP(w, r)
 }
 
@@ -47,15 +47,15 @@ func (chat *ChatHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var room *model.Room = chat.Rooms[roomID]
+	var room *models.Room = chat.Rooms[roomID]
 	if room == nil {
-		room = model.NewRoom(roomID)
+		room = models.NewRoom(roomID)
 		chat.Rooms[roomID] = room
 		log.Printf("Add new room: %s to list of rooms", room.ID)
 		logger.Trace.Printf("Number of rooms: %d", len(chat.Rooms))
 		go room.Run()
 	}
-	client := &model.Client{
+	client := &models.Client{
 		ID:     clientID,
 		Socket: socket,
 		Send:   make(chan []byte, messageBufferSize),

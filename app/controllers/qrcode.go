@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"fmt"
@@ -8,13 +8,13 @@ import (
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/qr"
 	"github.com/google/uuid"
-	util "github.com/phuonglvh/golang-first-pet/util/ip"
+	utils "github.com/phuonglvh/golang-first-pet/utils/ip"
 )
 
 // QRCodeGenerationHandler handle request code generation
 func QRCodeGenerationHandler(w http.ResponseWriter, r *http.Request) {
-	scheme := util.GetScheme(r)
-	hostname := util.GetMyIP()
+	scheme := utils.GetScheme(r)
+	hostname := utils.GetMyIP()
 	dataString := r.URL.Query().Get("string")
 
 	if dataString == "" {

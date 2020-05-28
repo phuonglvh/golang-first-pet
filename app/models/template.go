@@ -1,4 +1,4 @@
-package model
+package models
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ type TemplateHandler struct {
 func (t *TemplateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Parse: ", t.Filename)
 	t.once.Do(func() {
-		t.template = template.Must(template.ParseFiles(filepath.Join("template", t.Filename)))
+		t.template = template.Must(template.ParseFiles(filepath.Join("app/views", t.Filename)))
 	})
 	fmt.Println("Render: ", t.Filename)
 	t.template.Execute(w, r)

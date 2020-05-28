@@ -1,4 +1,4 @@
-package model
+package models
 
 // Page is interface for a test page
 type Page struct {

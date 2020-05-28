@@ -1,4 +1,4 @@
-package model
+package models
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	cache "github.com/patrickmn/go-cache"
 
 	"github.com/phuonglvh/golang-first-pet/config"
-	"github.com/phuonglvh/golang-first-pet/util/logger"
+	logger "github.com/phuonglvh/golang-first-pet/utils/logger"
 )
 
 const (
