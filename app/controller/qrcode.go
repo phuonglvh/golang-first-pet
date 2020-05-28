@@ -11,8 +11,8 @@ import (
 	util "github.com/phuonglvh/golang-first-pet/util/ip"
 )
 
-// ViewCodeHandler handle request code generation
-func ViewCodeHandler(w http.ResponseWriter, r *http.Request) {
+// QRCodeGenerationHandler handle request code generation
+func QRCodeGenerationHandler(w http.ResponseWriter, r *http.Request) {
 	scheme := util.GetScheme(r)
 	hostname := util.GetMyIP()
 	dataString := r.URL.Query().Get("string")

@@ -16,7 +16,7 @@ func main() {
 	logger.Init(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", controller.HomeHandler)
-	router.HandleFunc("/qrcode/generator", controller.ViewCodeHandler)
+	router.HandleFunc("/qrcode/generator", controller.QRCodeGenerationHandler)
 	router.HandleFunc("/chat/rooms/{id}", controller.ChatIndex)
 
 	chatHandler := &controller.ChatHandler{Rooms: make(map[string]*model.Room)}
