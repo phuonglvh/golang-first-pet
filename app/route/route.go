@@ -19,6 +19,7 @@ func Routes() *mux.Router {
 
 	// chat endpoint
 	router.HandleFunc("/chat/rooms/{id}", controllers.ChatPageHandler)
+	router.HandleFunc("/v2/chat/rooms/{id}", controllers.ChatPageHandlerV2)
 	router.Handle("/chat/rooms/{id}/ws", controllers.ChatWSHandler)
 
 	// static endpoint
