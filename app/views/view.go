@@ -1,8 +1,8 @@
 package views
 
 import (
-	"fmt"
 	"html/template"
+	"log"
 )
 
 // ViewResolver will handle template calls
@@ -13,7 +13,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Printf("Defined templates: %s", templ.DefinedTemplates())
+		log.Println(templ.DefinedTemplates())
 		ViewResolver = templ
 	}
 }
