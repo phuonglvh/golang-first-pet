@@ -14,7 +14,7 @@
 </head>
 
 <body>
-  <img src="/qrcode/generator?string=?">
+  <img id="code">
   <ul id="messages"></ul>
   <form id="chatbox">
     <textarea></textarea>
@@ -25,7 +25,13 @@
   <script>
 
     $(function () {
+      const baseURI = "/qrcode/generator";
+      const location = window.location.pathname;
+      const roomId = location.match(/\d+/g);
+      $("#code").attr("src", `${baseURI}?string=${roomId}`);
+    })
 
+    $(function () {
       var socket = null;
       var msgBox = $("#chatbox textarea");
       var messages = $("#messages");
