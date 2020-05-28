@@ -11,7 +11,8 @@ RUN (apk add --update --no-cache git)
 COPY . ./
 
 # Build
-RUN go install github.com/phuonglvh/golang-first-pet
+# RUN go install github.com/phuonglvh/golang-first-pet
+RUN go build -o /go/bin/golang-first-pet
 
 # production image
 FROM golang:1.14.3-alpine as golang-multi-room-chat
