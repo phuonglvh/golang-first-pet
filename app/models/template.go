@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"path/filepath"
 	"sync"
+
+	"github.com/phuonglvh/golang-first-pet/app/views"
 )
 
 // TemplateHandler modelling templates
@@ -22,5 +24,7 @@ func (t *TemplateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		t.template = template.Must(template.ParseFiles(filepath.Join("app/views", t.Filename)))
 	})
 	fmt.Println("Render: ", t.Filename)
-	t.template.Execute(w, r)
+	// t.template.Execute(w, r)
+	err := views.ViewResolver.ExecuteTemplate(w, "chat", nil)
+	fmt.Println((err))
 }
