@@ -23,7 +23,7 @@ func main() {
 	router.Handle("/chat/rooms/{id}/ws", chatHandler)
 
 	// host := config.Cfg.Server.Host
-	port := strconv.FormatInt(int64(config.Cfg.Server.Port), 10)
+	port := strconv.FormatInt(int64(config.Env.Server.Port), 10)
 	logger.Info.Println("Server is listening on port ", port)
 	http.ListenAndServe(":"+port, router)
 }

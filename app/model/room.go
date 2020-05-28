@@ -41,7 +41,7 @@ type Room struct {
 
 // NewRoom will create a new room
 func NewRoom(ID string) *Room {
-	lifetime := config.Cfg.Chat.Message.Lifetime
+	lifetime := config.Env.Chat.Message.Lifetime
 	cacheTTL := time.Duration(lifetime) * time.Minute
 	logger.Info.Printf("Set message lifetime to: %d minutes", lifetime)
 	return &Room{

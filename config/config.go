@@ -8,8 +8,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// Config contains environment variables
-type Config struct {
+// EnvConfiguration contains environment variables
+type EnvConfiguration struct {
 	Server struct {
 		Port int32  `yaml:"port", envconfig:"SERVER_PORT"`
 		Host string `yaml:"host", envconfig:"SERVER_HOST"`
@@ -21,16 +21,21 @@ type Config struct {
 	} `yaml:"chat"`
 }
 
-// Cfg contains application's configs
-var Cfg *Config = &Config{}
+// Env contains application's configs
+var Env *EnvConfiguration = &EnvConfiguration{}
 
 func init() {
-	// readFile(Cfg)
-	readEnv(Cfg)
-	fmt.Printf("%+v", Cfg)
+	mode := os.Getenv("MODE")
+	fmt.Printf("Server is running in %s mode\n", mode)
+	if mode == "PRODUCTION" {
+		readEnv(Env)
+	} else {
+		readFile(Env)
+	}
+	fmt.Printf("%+v\n", Env)
 }
 
-func readFile(cfg *Config) {
+func readFile(cfg *EnvConfiguration) {
 	f, err := os.Open("config.yml")
 	if err != nil {
 		processError(err)
@@ -44,7 +49,7 @@ func readFile(cfg *Config) {
 	}
 }
 
-func readEnv(cfg *Config) {
+func readEnv(cfg *EnvConfiguration) {
 	err := envconfig.Process("", cfg)
 	if err != nil {
 		processError(err)
