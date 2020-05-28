@@ -11,12 +11,12 @@ import (
 // Config contains environment variables
 type Config struct {
 	Server struct {
-		Port int32  `yaml:"port"`
-		Host string `yaml:"host"`
+		Port int32  `yaml:"port", envconfig:"SERVER_PORT"`
+		Host string `yaml:"host", envconfig:"SERVER_HOST"`
 	} `yaml:"server"`
 	Chat struct {
 		Message struct {
-			Lifetime int `yaml:"lifetime"`
+			Lifetime int `yaml:"lifetime", envconfig:"CHAT_MESSAGE_LIFETIME"`
 		} `yaml:"message"`
 	} `yaml:"chat"`
 }
@@ -25,7 +25,8 @@ type Config struct {
 var Cfg *Config = &Config{}
 
 func init() {
-	readFile(Cfg)
+	// readFile(Cfg)
+	readEnv(Cfg)
 	fmt.Printf("%+v", Cfg)
 }
 
