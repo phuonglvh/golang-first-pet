@@ -1,18 +1,18 @@
 version: "3.7"
 
 services:
-  golang-multi-room-chat:
-    image: "golang-multi-room-chat"
-    container_name: "golang-multi-room-chat"
+  go-multi-room-chat:
+    image: "go-multi-room-chat:latest"
+    container_name: "go-multi-room-chat"
     build:
       context: ../../
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - 9000:8080
     environment:
-      - MODE=PRODUCTION
-      - SERVER_HOST=
-      - SERVER_PORT=8080
-      - CHAT_MESSAGE_LIFETIME=1
+      MODE: PRODUCTION
+      SERVER_HOST: 127.0.0.1
+      SERVER_PORT: 8080
+      CHAT_MESSAGE_LIFETIME: 1
     restart: always
     network_mode: bridge

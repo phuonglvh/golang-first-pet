@@ -2,12 +2,13 @@ FROM golang:1.14.3-alpine as first-pet-build
 
 WORKDIR /go/src/github.com/phuonglvh/golang-first-pet
 
-# Copy the local package files to the container's workspace.
-COPY . ./
 RUN (apk add --update --no-cache git)
 
 # install dependencies
 # RUN go get -u ./...
+
+# Copy the local package files to the container's workspace.
+COPY . ./
 
 # Build
 RUN go install github.com/phuonglvh/golang-first-pet
