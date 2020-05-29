@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/phuonglvh/golang-first-pet/app/route"
 	"github.com/phuonglvh/golang-first-pet/config"
@@ -13,8 +13,10 @@ import (
 func main() {
 	logger.Init(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
 	router := route.Routes()
-	// host := config.Cfg.Server.Host
-	port := strconv.FormatInt(int64(config.Env.Server.Port), 10)
-	logger.Info.Println("Server is listening on port ", port)
-	http.ListenAndServe(":"+port, router)
+
+	host := config.Env.Server.Host
+	port := fmt.Sprint(config.Env.Server.Port)
+	addr := host + ":" + port
+	logger.Info.Println("Server is serving at: ", addr)
+	http.ListenAndServe(addr, router)
 }
