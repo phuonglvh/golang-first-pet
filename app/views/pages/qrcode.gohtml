@@ -2,21 +2,25 @@
 
 {{template "header"}}
 
-<div class='center'>
-  <img id='qrcode' src='{{ .QRCodeURL }}' style="width:30%;">
-  <a href='{{ .RoomURL }}' target="_blank" style="font-size: large;">{{ .RoomURL }}</a>
+<div class="row">
+  <div class="card" style="width: 40rem;">
+    <img class="card-img-top" src="{{ .QRCodeURL }}" style="width:40%;" alt="QRCodeURL">
+    <div class="card-body text-center">
+      <h5 class="card-title">Multi-room chat application</h5>
+      <a href='{{ .RoomURL }}' target="_blank" style="font-size: medium;">{{ .RoomURL }}</a>
+    </div>
+  </div>
 
   <style>
-    .center {
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      width: 50%;
-    }
     img {
       display: block;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .card {
+      margin: 0 auto;
+      float: none;
     }
   </style>
 </div>
