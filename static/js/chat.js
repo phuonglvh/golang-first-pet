@@ -1,7 +1,9 @@
 $(function () {
   const baseURI = '/qrcode/generator'
-  const location = window.location.pathname
-  const roomId = location.match(/\d+/g)
+  const segments = window.location.pathname.split('/')
+  if(segments.length < 1)
+    return
+  const roomId = segments[segments.length - 1]
   $('#code').attr('src', `${baseURI}?string=${roomId}`)
 })
 
