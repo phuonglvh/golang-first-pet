@@ -8,36 +8,51 @@ My Golang First Pet project
 ├── LICENSE
 ├── README.md
 ├── app
-│   ├── controller
-│   │   ├── chat.go
-│   │   ├── index.go
-│   │   └── qrcode.go
-│   ├── model
-│   │   ├── client.go
-│   │   ├── message.go
-│   │   ├── page.go
-│   │   ├── room.go
-│   │   └── template.go
-│   ├── route
-│   └── shared
-├── cfg
+│   ├── controllers
+│   │   ├── chat.go
+│   │   ├── index.go
+│   │   └── qrcode.go
+│   ├── models
+│   │   ├── client.go
+│   │   ├── message.go
+│   │   ├── page.go
+│   │   └── room.go
+│   ├── route
+│   │   └── route.go
+│   ├── shared
+│   └── views
+│       ├── layouts
+│       │   ├── footer.gohtml
+│       │   └── header.gohtml
+│       ├── pages
+│       │   ├── chat.gohtml
+│       │   └── qrcode.gohtml
+│       └── view.go
 ├── cmd
+├── config
+│   └── config.go
+├── config.yml
+├── config.yml.example
 ├── deployment
-│   └── local-mac
-│       └── docker-compose.yml
+│   └── local-mac
+│       └── docker-compose.yml
+├── go.mod
+├── go.sum
 ├── main.go
 ├── static
-├── template
-│   ├── chat.html
-│   ├── generator.html
-│   ├── js
-│   │   └── chat.js
-│   ├── layout
-│   └── partial
-│       ├── footer.tmpl
-│       └── menu.tmpl
-└── util
-    └── logger
-        └── logger.go
+│   ├── js
+│   │   ├── chat.js
+│   │   └── jquery.min.js
+│   └── style
+│       └── chatbox.css
+└── utils
+    ├── http
+    │   └── http.go
+    ├── logger
+    │   └── logger.go
+    ├── math
+    │   └── math.go
+    └── network
+        └── network.go
 
 ```
