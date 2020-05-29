@@ -8,6 +8,7 @@ import (
 	"github.com/phuonglvh/golang-first-pet/app/route"
 	"github.com/phuonglvh/golang-first-pet/config"
 	logger "github.com/phuonglvh/golang-first-pet/utils/logger"
+	network "github.com/phuonglvh/golang-first-pet/utils/network"
 )
 
 func main() {
@@ -18,5 +19,6 @@ func main() {
 	port := fmt.Sprint(config.Env.Server.Port)
 	addr := host + ":" + port
 	logger.Info.Println("Server is serving at: ", addr)
+	logger.Info.Printf("Homepage: http://%s:%s/", network.GetMyIP(), port)
 	http.ListenAndServe(addr, router)
 }
