@@ -8,13 +8,13 @@ import (
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/qr"
 	"github.com/google/uuid"
-	utils "github.com/phuonglvh/golang-first-pet/utils/ip"
+	network "github.com/phuonglvh/golang-first-pet/utils/network"
 )
 
 // QRCodeGenerationHandler handle request code generation
 func QRCodeGenerationHandler(w http.ResponseWriter, r *http.Request) {
-	scheme := utils.GetScheme(r)
-	hostname := utils.GetMyIP()
+	scheme := network.GetScheme(r)
+	hostname := network.GetMyIP()
 	dataString := r.URL.Query().Get("string")
 
 	if dataString == "" {
