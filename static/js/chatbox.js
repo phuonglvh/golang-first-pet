@@ -4,38 +4,38 @@ $(document).ready(function () {
   })
 })
 
-const SenderType = {
-  theirs: '',
-  mine: '_send',
-}
-
 $(function () {
+  const defaultAvatar = 'http://www.gravatar.com/avatar'
   const baseURI = '/chat/rooms/'
   const segments = window.location.pathname.split('/')
-  if (segments.length < 1)
-    return
+  if (segments.length < 1) { return }
   const roomId = segments[segments.length - 1]
-  const userId = window.sessionStorage.getItem('clientId');
+  const userId = window.sessionStorage.getItem('clientId')
 
   $('#room_id').text(`Group: ${roomId}`)
-  $('#contacts').append(contact(`Group: ${roomId}`, true))
+  $('#contacts').append(contact(`Group: ${roomId}`, true, defaultAvatar))
 
   const uri = `${baseURI}/${roomId}/messages`
   $.get(uri, (data, status) => {
-    const messages = JSON.parse(data);
+    console.log({ data, status })
+    if (status !== 'success') {
+      alert('Something went wrong')
+    }
+    const messages = JSON.parse(data)
     const items = []
     for (const msg of messages) {
       const item = generateMessage(
         msg.Sender === userId,
-        'http://www.gravatar.com/avatar',
+        defaultAvatar,
         msg.content,
         new Date(parseInt(msg.Timestamp)).toString()
       )
-      items.push(item);
+      items.push(item)
     }
     $('#room_total_messages').text(`${items.length} messages`)
+    $('#msg_container').empty()
     $('#msg_container').append(items)
-  });
+  })
 
   var socket = null
   var msgBox = $('#message_input')
@@ -51,11 +51,10 @@ $(function () {
     msgBox.val('')
     const item = generateMessage(
       true,
-      'http://www.gravatar.com/avatar',
+      defaultAvatar,
       content,
       new Date().toISOString()
     )
-    console.log({ item })
     $('#msg_container').append(item)
     return false
   })
@@ -64,21 +63,22 @@ $(function () {
     alert('Error: Your browser does not support web sockets.')
   } else {
     var clientId = window.sessionStorage.clientId ? window.sessionStorage.clientId : window.sessionStorage.clientId = Math.floor(Math.random() * 1000000)
-    document.cookie = 'X-Authorization=' + clientId + '; path=/'
+    document.cookie = 'Authorization=' + clientId
     socket = new WebSocket(`ws://${window.location.host}` + window.location.pathname + '/ws')
+
     socket.onclose = function () {
       alert('Connection has been closed.')
     }
-    socket.onmessage = (e) => {
-      console.log(e)
+
+    socket.onmessage = (data) => {
+      const msg = JSON.parse(data.data)
       const item = generateMessage(
         msg.Sender === userId,
-        'http://www.gravatar.com/avatar',
+        defaultAvatar,
         msg.content,
         new Date(parseInt(msg.Timestamp)).toString()
       )
       $('#msg_container').append(item)
-
     }
   }
 })
@@ -98,7 +98,7 @@ const theirMessage = (avatarUrl, content, time) => {
         <!-- <span class='msg_time'>${time}</span> -->
       </div>
     </div>`
-  );
+  )
 }
 
 const myMessage = (avatarUrl, content, time) => {
@@ -112,21 +112,21 @@ const myMessage = (avatarUrl, content, time) => {
         <img src='${avatarUrl}' class='rounded-circle user_img_msg'>
       </div>
     </div>`
-  );
+  )
 }
 
-const contact = (roomId, isActive, avatarUrl = 'http://www.gravatar.com/avatar') => {
+const contact = (roomId, isActive, avatarUrl) => {
   return `
-    <li ${isActive ? `class='active'` : ''}>
+    <li ${isActive ? 'class=\'active\'' : ''}>
       <div class='d-flex bd-highlight'>
           <div class='img_cont'>
               <img src=${avatarUrl} class='rounded-circle user_img'>
-              <span class='online_icon offline'></span>
+              <span class='online_icon ${isActive ? 'online' : 'offline'}'></span>
           </div>
           <div class='user_info'>
               <span>${roomId}</span>
               <!-- <<p>Taherah left 7 mins ago</p> -->
           </div>
       </div>
-    </li>`;
+    </li>`
 }

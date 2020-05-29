@@ -62,7 +62,7 @@ func (room *Room) Run() {
 			// joining
 			room.clients[client] = true
 			logger.Info.Printf("Client %s has joined the room %s", client.ID, room.ID)
-			room.sendPastMessages(client)
+			// room.sendPastMessages(client)
 		case client := <-room.Leave:
 			// leaving
 			delete(room.clients, client)
@@ -78,7 +78,7 @@ func (room *Room) Run() {
 			room.storage.Add(message.ID, message, cache.DefaultExpiration)
 			logger.Trace.Printf("Client has sent message to others in room %s: %s", room.ID, fwdMsg.Content)
 			// forward message to all clients
-			room.sendMessageToAll(message)
+			room.sendMessageToAllExcept(message, fwdMsg.Sender)
 		}
 	}
 }
@@ -95,6 +95,15 @@ func (room *Room) GetMessages() []*Message {
 
 func (room *Room) sendMessageToAll(message *Message) {
 	for client := range room.clients {
+		room.sendMessageToClient(client, message)
+	}
+}
+
+func (room *Room) sendMessageToAllExcept(message *Message, clientID string) {
+	for client := range room.clients {
+		if client.ID == clientID {
+			continue
+		}
 		room.sendMessageToClient(client, message)
 	}
 }

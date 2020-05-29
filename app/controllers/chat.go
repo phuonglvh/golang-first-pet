@@ -67,7 +67,7 @@ func GetRoomMessages(w http.ResponseWriter, r *http.Request) {
 }
 
 func (chat *ChatHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("X-Authorization")
+	cookie, err := r.Cookie("Authorization")
 	if err != nil {
 		logger.Error.Println(err.Error())
 	}
