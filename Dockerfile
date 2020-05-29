@@ -19,9 +19,16 @@ RUN (apk add tree)
 COPY --from=app_build $APP_HOME/go-multi-room-chat ./
 COPY ["./static/", "./static"]
 COPY ["./app/views", "./app/views"]
+RUN tree -L 4
+
+# default environment variables
+ENV MODE PRODUCTION
+ENV SERVER_HOST 0.0.0.0
+ENV SERVER_PORT 8080
+ENV CHAT_MESSAGE_LIFETIME 1
 
 # Document that the service listens on port 8080.
 EXPOSE 8080
-RUN tree -L 4
+
 # Run the outyet command by default when the container starts.
-ENTRYPOINT ["./go-multi-room-chat"]
+ENTRYPOINT ["sh", "-c", "MODE=${MODE} SERVER_HOST=${SERVER_HOST} SERVER_PORT=${SERVER_PORT} CHAT_MESSAGE_LIFETIME=${CHAT_MESSAGE_LIFETIME} ./go-multi-room-chat"]
