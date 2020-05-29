@@ -28,7 +28,7 @@ ENV SERVER_PORT 8080
 ENV CHAT_MESSAGE_LIFETIME 1
 
 # Document that the service listens on port 8080.
-EXPOSE 8080
+EXPOSE ${SERVER_PORT}
 
 # Run the outyet command by default when the container starts.
 ENTRYPOINT ["sh", "-c", "MODE=${MODE} SERVER_HOST=${SERVER_HOST} SERVER_PORT=${SERVER_PORT} CHAT_MESSAGE_LIFETIME=${CHAT_MESSAGE_LIFETIME} ./go-multi-room-chat"]
