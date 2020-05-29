@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -52,6 +53,17 @@ func ChatPageHandlerV2(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+// GetRoomMessages handles get and return message of the room
+func GetRoomMessages(w http.ResponseWriter, r *http.Request) {
+	roomID := httpUtils.ParseParam(r, "id")
+	room := ChatWSHandler.Rooms[roomID]
+	if room == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	json.NewEncoder(w).Encode(room.GetMessages())
 }
 
 func (chat *ChatHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {

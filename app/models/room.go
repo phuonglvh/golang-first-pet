@@ -83,6 +83,16 @@ func (room *Room) Run() {
 	}
 }
 
+// GetMessages returns room's valid messages
+func (room *Room) GetMessages() []*Message {
+	messages := []*Message{}
+	items := room.storage.Items()
+	for _, msg := range items {
+		messages = append(messages, msg.Object.(*Message))
+	}
+	return messages
+}
+
 func (room *Room) sendMessageToAll(message *Message) {
 	for client := range room.clients {
 		room.sendMessageToClient(client, message)
