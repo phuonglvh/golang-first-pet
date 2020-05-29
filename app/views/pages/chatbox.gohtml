@@ -16,32 +16,7 @@
                     </div>
                 </div>
                 <div class='card-body contacts_body'>
-                    <ui class='contacts'>
-                        <!-- <li class='active'>
-                            <div class='d-flex bd-highlight'>
-                                <div class='img_cont'>
-                                    <img src='http://www.gravatar.com/avatar' class='rounded-circle user_img'>
-                                    <span class='online_icon'></span>
-                                </div>
-                                <div class='user_info'>
-                                    <span></span>
-                                    <p>Kalid is online</p>
-                                </div>
-                            </div>
-                        </li> -->
-                        <!-- <li>
-                            <div class='d-flex bd-highlight'>
-                                <div class='img_cont'>
-                                    <img src='http://www.gravatar.com/avatar' class='rounded-circle user_img'>
-                                    <span class='online_icon offline'></span>
-                                </div>
-                                <div class='user_info'>
-                                    <span>Taherah Big</span>
-                                    <p>Taherah left 7 mins ago</p>
-                                </div>
-                            </div>
-                        </li> -->
-                    </ui>
+                    <ui class='contacts' id='contacts'> </ui>
                 </div>
                 <div class='card-footer'></div>
             </div>
@@ -79,9 +54,9 @@
                         <div class='input-group-append'>
                             <span class='input-group-text attach_btn'><i class='fas fa-paperclip'></i></span>
                         </div>
-                        <textarea name='' class='form-control type_msg' placeholder='Type your message...'></textarea>
+                        <textarea id='message_input' name='' class='form-control type_msg' placeholder='Type your message...'></textarea>
                         <div class='input-group-append'>
-                            <span class='input-group-text send_btn'><i class='fas fa-location-arrow'></i></span>
+                            <span class='input-group-text send_btn' id='btn_send_message'><i class='fas fa-location-arrow'></i></span>
                         </div>
                     </div>
                 </div>
