@@ -41,3 +41,8 @@ func GenerateRoomLink(scheme string, hostname string, roomID string) string {
 	data := scheme + "://" + hostname + ":" + fmt.Sprint(config.Env.Server.Port) + "/chat/rooms/" + roomID
 	return data
 }
+
+// GenCodeGeneratorLink returns the api path of qrcode generator endpoint
+func GenCodeGeneratorLink(roomID string) string {
+	return "/qrcode/generator?string=" + roomID
+}

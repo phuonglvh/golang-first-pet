@@ -20,12 +20,8 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		QRCodeURL string
 		RoomURL   string
 	}{
-		QRCodeURL: genRedirectURI(newRoomID),
+		QRCodeURL: GenCodeGeneratorLink(newRoomID),
 		RoomURL:   GenerateRoomLink(network.GetScheme(r), network.GetMyIP(), newRoomID),
 	}
 	views.ViewResolver.ExecuteTemplate(w, "qrcode", data)
-}
-
-func genRedirectURI(roomID string) string {
-	return "qrcode/generator?string=" + roomID
 }

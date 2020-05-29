@@ -35,21 +35,8 @@ func ChatPageHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err := views.ViewResolver.ExecuteTemplate(w, "chat", nil)
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-// ChatPageHandlerV2 handle render the sandbox chat page
-func ChatPageHandlerV2(w http.ResponseWriter, r *http.Request) {
-	roomID := httpUtils.ParseParam(r, "id")
-	room := ChatWSHandler.Rooms[roomID]
-	if room == nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	err := views.ViewResolver.ExecuteTemplate(w, "chatbox", nil)
+	data := struct{ QRCodeURL string }{QRCodeURL: GenCodeGeneratorLink(roomID)}
+	err := views.ViewResolver.ExecuteTemplate(w, "chat", data)
 	if err != nil {
 		fmt.Println(err)
 	}
