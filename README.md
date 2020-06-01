@@ -67,7 +67,14 @@ port: <server_port>
 lifetime: <lifetime_of_an_message>
 ```
 
-## Start application on host machine (not containerized)
+## Start application
+1. On host machine (not containerized)
 ```
 go run main.go
+```
+
+2. Containerize using Docker
+```
+cd ./deployment/local-mac
+docker-compose up --build
 ```
