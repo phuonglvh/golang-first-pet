@@ -4,54 +4,52 @@ My Golang First Pet project
 ## Folder structure
 ```
 .
-├── Dockerfile
-├── LICENSE
-├── README.md
 ├── app
-│   ├── controllers
-│   │   ├── chat.go
-│   │   ├── index.go
-│   │   └── qrcode.go
-│   ├── models
-│   │   ├── client.go
-│   │   ├── message.go
-│   │   ├── page.go
-│   │   └── room.go
-│   ├── route
-│   │   └── route.go
-│   ├── shared
-│   └── views
-│       ├── layouts
-│       │   ├── footer.gohtml
-│       │   └── header.gohtml
-│       ├── pages
-│       │   ├── chat.gohtml
-│       │   └── qrcode.gohtml
-│       └── view.go
-├── cmd
+│   ├── controllers
+│   │   ├── chat.go
+│   │   ├── index.go
+│   │   └── qrcode.go
+│   ├── models
+│   │   ├── client.go
+│   │   ├── message.go
+│   │   └── room.go
+│   ├── route
+│   │   └── route.go
+│   ├── shared
+│   └── views
+│       ├── layouts
+│       │   ├── footer.gohtml
+│       │   └── header.gohtml
+│       ├── pages
+│       │   ├── chat.gohtml
+│       │   └── qrcode.gohtml
+│       └── view.go
 ├── config
-│   └── config.go
-├── config.yml
+│   └── config.go
 ├── config.yml.example
 ├── deployment
-│   └── local-mac
-│       └── docker-compose.yml
+│   └── local-mac
+│       └── docker-compose.yml
+├── Dockerfile
 ├── go.mod
 ├── go.sum
+├── LICENSE
 ├── main.go
+├── README.md
 ├── static
-│   ├── js
-│   │   ├── chat.js
-│   │   └── jquery.min.js
-│   └── style
-│       └── chatbox.css
+│   ├── js
+│   │   ├── chat.js
+│   │   └── jquery.min.js
+│   └── style
+│       └── chatbox.css
+├── tree.txt
 └── utils
     ├── http
-    │   └── http.go
+    │   └── http.go
     ├── logger
-    │   └── logger.go
+    │   └── logger.go
     ├── math
-    │   └── math.go
+    │   └── math.go
     └── network
         └── network.go
 
