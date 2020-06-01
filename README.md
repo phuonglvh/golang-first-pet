@@ -56,3 +56,8 @@ My Golang First Pet project
         └── network.go
 
 ```
+
+## Start application on host machine (not containerized)
+```
+go run main.go
+```
