@@ -57,6 +57,18 @@ My Golang First Pet project
 
 ```
 
+## Installation
+1. Create config file
+```
+cp ./config.yml.example ./config.yml
+```
+2. Edit values of some variables in **config.yml**
+```
+host: <server_ip>
+port: <server_port>
+lifetime: <lifetime_of_an_message>
+```
+
 ## Start application on host machine (not containerized)
 ```
 go run main.go
